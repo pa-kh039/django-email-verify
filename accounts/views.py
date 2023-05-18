@@ -18,18 +18,18 @@ def login_attempt(request):
 
         user_obj=User.objects.filter(username=username).first()
         if user_obj is None:
-            messages.error('User does not exist')
+            messages.error(request,'User does not exist')
             return redirect('/register')
         
         profile_obj=Profile.objects.filter(user=user_obj).first()
 
         if not profile_obj.is_verified:
-            messages.warning('Verify your email first')
+            messages.warning(request,'Verify your email first')
             return redirect('/login')
         
         user=auth.authenticate(username=username,password=password)
         if user is None:
-            messages.warning('Invalid credentials')
+            messages.warning(request,'Invalid credentials')
             return redirect('/login')
         else:
             auth.login(request,user)
